@@ -1,0 +1,15 @@
+bindings/
+build/
+pdfs/
+backpus/
+plots/
+reps/
+*.html
+*.tr
+*.bat
+*.plt
+*.py
+*.pcap
+*.txt
+*.pyc
+LICENSE

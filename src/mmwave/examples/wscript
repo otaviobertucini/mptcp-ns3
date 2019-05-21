@@ -1,0 +1,15 @@
+# -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    obj = bld.create_ns3_program('mmwave-example', ['mmwave'])
+    obj.source = 'mmwave-example.cc'
+    obj = bld.create_ns3_program('mmwave-tcp-example', ['mmwave'])
+    obj.source = 'mmwave-tcp-example.cc'
+    obj = bld.create_ns3_program('mmwave-simple-epc', ['mmwave'])
+    obj.source = 'mmwave-simple-epc.cc'
+    obj = bld.create_ns3_program('mmwave-epc-tdma', ['mmwave'])
+    obj.source = 'mmwave-epc-tdma.cc'   
+    obj = bld.create_ns3_program('mmwave-tdma', ['mmwave'])
+    obj.source = 'mmwave-tdma.cc'       
+    obj = bld.create_ns3_program('mmwave-simple-building-obstacle', ['mmwave'])
+    obj.source = 'mmwave-simple-building-obstacle.cc'
