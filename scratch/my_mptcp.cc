@@ -38,7 +38,7 @@ s               d
 #include "ns3/netanim-module.h"
 
 #include "attacker.h"
-
+class Attacker;
 
 using namespace ns3;
 
@@ -142,8 +142,9 @@ main(int argc, char *argv[]){
     NodeContainer attackerHostContainer = NodeContainer(atttackerNode);
     internet.Install(atttackerNode);
 
-    Ptr<Socket> sock = Socket::CreateSocket(atttackerNode,
-      TcpSocketFactory::GetTypeId());
+    // Ptr<Socket> sock = Socket::CreateSocket(atttackerNode,
+    //   TcpSocketFactory::GetTypeId());
+    Ptr<AttackerSocket> sock = CreateObject<AttackerSocket>();
 
     // Connect attacker and source
     //attacker to sender
@@ -157,7 +158,7 @@ main(int argc, char *argv[]){
     ipv4.SetBase("10.2.1.0", "255.255.255.0");
     Ipv4InterfaceContainer iplinkAtck_src = ipv4.Assign (linkAtck_src);
 
-    uint16_t sourcePort = 8080;
+    //uint16_t sourcePort = 8080;
     Ptr<Attacker> attacker = CreateObject<Attacker>();
     attacker->Setup (sock, InetSocketAddress(iplinkAtck_src.GetAddress(0),
                     port), 1040, 1000, DataRate("1Mbps"));
