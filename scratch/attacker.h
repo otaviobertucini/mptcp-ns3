@@ -3,7 +3,9 @@
 
 #include "attacker_socket.h"
 
-using namespace ns3;
+using namespace std;
+
+namespace ns3{
 
 class Attacker : public Application
 {
@@ -30,5 +32,7 @@ private:
   bool            m_running;
   uint32_t        m_packetsSent;
 };
+
+}
 
 #endif

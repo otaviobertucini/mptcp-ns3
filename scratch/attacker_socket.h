@@ -10,9 +10,10 @@ namespace ns3{
 
 class AttackerSocket : public TcpSocketBase
 {
+
 public:
-  AttackerSocket(void);
-  ~AttackerSocket(void);
+  AttackerSocket();
+  ~AttackerSocket();
 private:
   void SendP();
 

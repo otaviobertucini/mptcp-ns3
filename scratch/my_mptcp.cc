@@ -38,7 +38,7 @@ s               d
 #include "ns3/netanim-module.h"
 
 #include "attacker.h"
-class Attacker;
+// class Attacker;
 
 using namespace ns3;
 

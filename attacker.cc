@@ -1,5 +1,9 @@
 #include "attacker.h"
 
+using namespace std;
+
+namespace ns3{
+
 Attacker::Attacker ()
   : m_socket (0),
     m_peer (),
@@ -80,4 +84,6 @@ Attacker::ScheduleTx (void)
       Time tNext (Seconds (m_packetSize * 8 / static_cast<double> (m_dataRate.GetBitRate ())));
       m_sendEvent = Simulator::Schedule (tNext, &Attacker::SendPacket, this);
     }
+}
+
 }
