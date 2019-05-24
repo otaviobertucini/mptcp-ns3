@@ -146,6 +146,9 @@ main(int argc, char *argv[]){
     //   TcpSocketFactory::GetTypeId());
     Ptr<AttackerSocket> sock = CreateObject<AttackerSocket>();
 
+    //TODO: the m_tcp atribute of the socket is not being created. See whats
+    // going on. Problaby the socket is not being created on the right mode.
+
     // Connect attacker and source
     //attacker to sender
     NodeContainer nAtck_src = NodeContainer(atttackerNode, sourceNode);
@@ -163,14 +166,14 @@ main(int argc, char *argv[]){
     attacker->Setup (sock, InetSocketAddress(iplinkAtck_src.GetAddress(0),
                     port), 1040, 1000, DataRate("1Mbps"));
     atttackerNode->AddApplication(attacker);
-    attacker->SetStartTime(Seconds(0.0));
-    attacker->SetStopTime(Seconds(2.0));
+    attacker->SetStartTime(Seconds(1.5));
+    attacker->SetStopTime(Seconds(3.0));
 
 	   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
 	   //AnimationInterface anim("my_mptcp.xml");
 
-    Simulator::Stop (Seconds(2.0));
+    Simulator::Stop (Seconds(4.0));
     Simulator::Run();
 
     Simulator::Destroy();

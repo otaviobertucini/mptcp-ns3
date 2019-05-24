@@ -13,10 +13,12 @@ class AttackerSocket : public TcpSocketBase
 
 public:
   AttackerSocket();
-  ~AttackerSocket();
-private:
+  virtual ~AttackerSocket();
+
+  static TypeId GetTypeId (void);
   void SendP();
 
+  //Inherit from TcpSocketBase
   void SetInitialSSThresh (uint32_t threshold);
   uint32_t GetInitialSSThresh (void) const;
   void SetInitialCwnd (uint32_t cwnd);
@@ -25,6 +27,7 @@ private:
   void DupAck (const TcpHeader& tcpHeader, uint32_t count);
   void ScaleSsThresh (uint8_t scaleFactor);
 
+private:
   uint32_t m_initialCWnd;
   uint32_t m_ssThresh;
 

@@ -85,7 +85,7 @@ TcpSocketBase::GetTypeId (void)
 
     .AddAttribute("MaxSegLifetime", "Maximum segment lifetime in seconds, use for TIME_WAIT state transition to CLOSED state",
 		      DoubleValue(120), /* RFC793 says MSL=2 minutes*/
-		      MakeDoubleAccessor(&TcpSocketBase::m_msl), 
+		      MakeDoubleAccessor(&TcpSocketBase::m_msl),
 		      MakeDoubleChecker<double>(0))
     .AddAttribute ("MaxWindowSize", "Max size of advertised window",
                    UintegerValue (65535),
@@ -558,7 +558,7 @@ TcpSocketBase::Close (void)
       SendRST ();
       return 0;
     }
- 
+
   if (m_txBuffer->SizeFromSequence (m_nextTxSequence) > 0)
     { // App close with pending data must wait until all data transmitted
       if (m_closeOnEmpty == false)
@@ -576,7 +576,7 @@ int
 TcpSocketBase::ShutdownSend (void)
 {
   NS_LOG_FUNCTION (this);
-  
+
   //this prevents data from being added to the buffer
   m_shutdownSend = true;
   m_closeOnEmpty = true;
@@ -587,7 +587,7 @@ TcpSocketBase::ShutdownSend (void)
       if (m_state == ESTABLISHED || m_state == CLOSE_WAIT)
         {
           NS_LOG_INFO("Emtpy tx buffer, send fin");
-          SendEmptyPacket (TcpHeader::FIN);  
+          SendEmptyPacket (TcpHeader::FIN);
 
           if (m_state == ESTABLISHED)
             { // On active close: I am the first one to send FIN
@@ -598,10 +598,10 @@ TcpSocketBase::ShutdownSend (void)
             { // On passive close: Peer sent me FIN already
               NS_LOG_INFO ("CLOSE_WAIT -> LAST_ACK");
               m_state = LAST_ACK;
-            }  
+            }
         }
     }
- 
+
   return 0;
 }
 
@@ -897,7 +897,7 @@ TcpSocketBase::CloseAndNotify (void)
 
   NS_LOG_INFO (TcpStateName[m_state] << " -> CLOSED");
   m_state = CLOSED;
-  //DeallocateEndPoint (); //MPTCP 
+  //DeallocateEndPoint (); //MPTCP
   CancelAllTimers();
   GenerateCWND();
   GenerateRTT();
@@ -2362,7 +2362,7 @@ TcpSocketBase::EstimateRtt (const TcpHeader& tcpHeader)
      _RTT.push_back(std::make_pair(Simulator::Now().GetSeconds(), m_lastRtt.Get().GetMilliSeconds()));
      _AvgRtt.push_back(std::make_pair(Simulator::Now().GetSeconds(), m_rtt->GetCurrentEstimate().GetMilliSeconds()));
      //_RTO.push_back(std::make_pair(Simulator::Now().GetSeconds(), m_rtt->RetransmitTimeout().GetMilliSeconds()));
- 
+
    }
 }
 
@@ -3226,9 +3226,9 @@ void TcpSocketBase::UpdateWindowSize (const TcpHeader &header)
     }
 
   // Test for conditions that allow updating of the window
-  // 1) segment contains new data (advancing the right edge of the receive 
-  // buffer), 
-  // 2) segment does not contain new data but the segment acks new data 
+  // 1) segment contains new data (advancing the right edge of the receive
+  // buffer),
+  // 2) segment does not contain new data but the segment acks new data
   // (highest sequence number acked advances), or
   // 3) the advertised window is larger than the current send window
   bool update = false;

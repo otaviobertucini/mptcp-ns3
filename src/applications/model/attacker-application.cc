@@ -37,11 +37,11 @@ Attacker::StartApplication (void)
   m_running = true;
   m_packetsSent = 0;
   m_socket->Bind ();
-  if(m_socket->Connect (m_peer) == -1){
-    cout << "-------------------------" << endl;
-    cout << "Não deu" << endl;
-    cout << "-------------------------" << endl;
-  }
+  // if(m_socket->Connect (m_peer) == -1){
+  //   cout << "-------------------------" << endl;
+  //   cout << "Não deu" << endl;
+  //   cout << "-------------------------" << endl;
+  // }
   //SendPacket ();
 }
 
@@ -84,6 +84,16 @@ Attacker::ScheduleTx (void)
       Time tNext (Seconds (m_packetSize * 8 / static_cast<double> (m_dataRate.GetBitRate ())));
       m_sendEvent = Simulator::Schedule (tNext, &Attacker::SendPacket, this);
     }
+}
+
+TypeId
+Attacker::GetTypeId (void)
+{
+  static TypeId tid = TypeId ("ns3::Attacker")
+    .SetParent<Application> ()
+    .SetGroupName ("Application")
+    ;
+  return tid;
 }
 
 }

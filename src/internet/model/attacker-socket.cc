@@ -57,4 +57,14 @@ namespace ns3{
       // NS_LOG_FUNCTION(this << (int)scaleFactor);
   }
 
+  TypeId
+  AttackerSocket::GetTypeId (void)
+  {
+    static TypeId tid = TypeId ("ns3::AttackerSocket")
+      .SetParent<TcpSocketBase> ()
+      .SetGroupName ("Internet")
+      ;
+    return tid;
+  }
+
 }
