@@ -21,6 +21,7 @@ def build(bld):
         'model/application-packet-probe.cc',
         'model/mp-tcp-packet-sink.cc',
         'model/mp-tcp-bulk-send-application.cc',
+        'model/attacker-application.cc', #Otávio Bertucini
         'helper/mp-tcp-packet-sink-helper.cc',
         'helper/mp-tcp-bulk-send-helper.cc',
         'helper/bulk-send-helper.cc',
@@ -30,7 +31,7 @@ def build(bld):
         'helper/udp-client-server-helper.cc',
         'helper/udp-echo-helper.cc',
         'helper/v4ping-helper.cc',
-        'helper/radvd-helper.cc',
+        'helper/radvd-helper.cc',        
         ]
 
     applications_test = bld.create_ns3_module_test_library('applications')
@@ -59,6 +60,7 @@ def build(bld):
         'model/application-packet-probe.h',
         'model/mp-tcp-packet-sink.h',
         'model/mp-tcp-bulk-send-application.h',
+        'model/attacker-application.h', #Otávio Bertucini
 	'helper/mp-tcp-packet-sink-helper.h',
         'helper/mp-tcp-bulk-send-helper.h',
 	'helper/bulk-send-helper.h',

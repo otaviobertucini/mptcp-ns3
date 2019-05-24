@@ -37,7 +37,7 @@ s               d
 #include "ns3/ipv4-header.h"
 #include "ns3/netanim-module.h"
 
-#include "attacker.h"
+#include "ns3/attacker-application.h"
 // class Attacker;
 
 using namespace ns3;
