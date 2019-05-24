@@ -25,6 +25,9 @@ private:
   void DupAck (const TcpHeader& tcpHeader, uint32_t count);
   void ScaleSsThresh (uint8_t scaleFactor);
 
+  uint32_t m_initialCWnd;
+  uint32_t m_ssThresh;
+
 };
 
 }

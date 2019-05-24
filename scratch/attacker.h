@@ -2,6 +2,9 @@
 #define ATTACKER_H
 
 #include "attacker_socket.h"
+#include "ns3/data-rate.h"
+#include "ns3/packet.h"
+#include "ns3/application.h"
 
 using namespace std;
 
