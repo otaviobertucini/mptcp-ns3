@@ -2,6 +2,7 @@
 #define ATTACKER_H
 
 #include "ns3/attacker-socket.h"
+#include "ns3/attacker-socket-factory.h"
 #include "ns3/data-rate.h"
 #include "ns3/packet.h"
 #include "ns3/application.h"
@@ -17,9 +18,9 @@ public:
   Attacker ();
   virtual ~Attacker();
 
-  void Setup (Ptr<AttackerSocket> socket, Address address, uint32_t packetSize,
+  void Setup (Address address, uint32_t packetSize,
               uint32_t nPackets, DataRate dataRate);
-              
+
   virtual void StartApplication (void);
   virtual void StopApplication (void);
 
@@ -27,6 +28,8 @@ public:
   void SendPacket (void);
 
   static TypeId GetTypeId (void);
+
+  TypeId m_tid;
 
 private:
   Ptr<AttackerSocket>     m_socket;

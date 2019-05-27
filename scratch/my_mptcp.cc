@@ -137,21 +137,23 @@ main(int argc, char *argv[]){
     sourceApps.Stop(Seconds(2.0));
 
     // Create attacker node
-    Ptr<Node> atttackerNode = CreateObject<Node> ();
-    Names::Add ("atttacker", atttackerNode);
-    NodeContainer attackerHostContainer = NodeContainer(atttackerNode);
-    internet.Install(atttackerNode);
+    Ptr<Node> attackerNode = CreateObject<Node> ();
+    Names::Add ("attacker", attackerNode);
+    NodeContainer attackerHostContainer = NodeContainer(attackerNode);
+    internet.Install(attackerNode);
 
     // Ptr<Socket> sock = Socket::CreateSocket(atttackerNode,
     //   TcpSocketFactory::GetTypeId());
-    Ptr<AttackerSocket> sock = CreateObject<AttackerSocket>();
+    // Ptr<AttackerSocket> sock = CreateObject<AttackerSocket>();
+    // Ptr<AttackerSocket> sock = DynamicCast<AttackerSocket>
+    //     (Socket::CreateSocket(attackerNode, TcpSocketFactory::GetTypeId()));
 
     //TODO: the m_tcp atribute of the socket is not being created. See whats
     // going on. Problaby the socket is not being created on the right mode.
 
     // Connect attacker and source
     //attacker to sender
-    NodeContainer nAtck_src = NodeContainer(atttackerNode, sourceNode);
+    NodeContainer nAtck_src = NodeContainer(attackerNode, sourceNode);
     PointToPointHelper p2pAttacker;
     p2pAttacker.SetDeviceAttribute("DataRate", StringValue("100Mbps"));
     p2pAttacker.SetChannelAttribute("Delay", StringValue("1ms"));
@@ -163,9 +165,9 @@ main(int argc, char *argv[]){
 
     //uint16_t sourcePort = 8080;
     Ptr<Attacker> attacker = CreateObject<Attacker>();
-    attacker->Setup (sock, InetSocketAddress(iplinkAtck_src.GetAddress(0),
+    attackerNode->AddApplication(attacker);
+    attacker->Setup (InetSocketAddress(iplinkAtck_src.GetAddress(0),
                     port), 1040, 1000, DataRate("1Mbps"));
-    atttackerNode->AddApplication(attacker);
     attacker->SetStartTime(Seconds(1.5));
     attacker->SetStopTime(Seconds(3.0));
 

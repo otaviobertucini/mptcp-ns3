@@ -348,8 +348,17 @@ TcpSocketBase::GetNode (void) const
 int
 TcpSocketBase::Bind (void)
 {
+  cout << "----------------" << endl;
+  cout << "Aqui3" << endl;
+  cout << "----------------" << endl;
   NS_LOG_FUNCTION (this);
+  cout << "----------------" << endl;
+  cout << "Aqui" << endl;
+  cout << "----------------" << endl;
   m_endPoint = m_tcp->Allocate ();
+  cout << "----------------" << endl;
+  cout << "Aqui2" << endl;
+  cout << "----------------" << endl;
   if (0 == m_endPoint)
     {
       m_errno = ERROR_ADDRNOTAVAIL;

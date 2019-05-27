@@ -22,9 +22,9 @@ Attacker::~Attacker()
 }
 
 void
-Attacker::Setup (Ptr<AttackerSocket> socket, Address address, uint32_t packetSize, uint32_t nPackets, DataRate dataRate)
+Attacker::Setup (Address address, uint32_t packetSize, uint32_t nPackets, DataRate dataRate)
 {
-  m_socket = socket;
+  // m_socket = socket;
   m_peer = address;
   m_packetSize = packetSize;
   m_nPackets = nPackets;
@@ -36,6 +36,8 @@ Attacker::StartApplication (void)
 {
   m_running = true;
   m_packetsSent = 0;
+  m_socket = DynamicCast<AttackerSocket>(Socket::CreateSocket(GetNode(),
+              AttackerSocketFactory::GetTypeId()));
   m_socket->Bind ();
   // if(m_socket->Connect (m_peer) == -1){
   //   cout << "-------------------------" << endl;
