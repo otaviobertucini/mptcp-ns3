@@ -4,6 +4,8 @@ using namespace std;
 
 namespace ns3{
 
+  NS_OBJECT_ENSURE_REGISTERED (AttackerSocket);
+
   AttackerSocket::AttackerSocket(){}
 
   AttackerSocket::~AttackerSocket(){}
