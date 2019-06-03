@@ -37,10 +37,10 @@
 NS_LOG_COMPONENT_DEFINE ("MpTcpBulkSendApplication");
 
 namespace ns3 {
-    
+
     NS_OBJECT_ENSURE_REGISTERED (MpTcpBulkSendApplication)
     ;
-    
+
     TypeId
     MpTcpBulkSendApplication::GetTypeId (void)
     {
@@ -106,8 +106,8 @@ namespace ns3 {
         ;
         return tid;
     }
-    
-    
+
+
     MpTcpBulkSendApplication::MpTcpBulkSendApplication ()
     : m_socket (0),
     m_connected (false),
@@ -117,14 +117,14 @@ namespace ns3 {
         //  m_data = new uint8_t[m_bufferSize];
         //memset(m_data, 0, m_sendSize*2);
     }
-    
+
     MpTcpBulkSendApplication::~MpTcpBulkSendApplication ()
     {
         NS_LOG_FUNCTION (this);
         //  delete [] m_data;
         //  m_data = 0;
     }
-    
+
     void
     MpTcpBulkSendApplication::SetBuffer(uint32_t buffSize){
         NS_LOG_FUNCTION_NOARGS();
@@ -133,30 +133,30 @@ namespace ns3 {
         //  m_data = new uint8_t[buffSize];
         //memset(m_data, 0, m_bufferSize);
     }
-    
+
     void
     MpTcpBulkSendApplication::SetMaxBytes (uint32_t maxBytes)
     {
         NS_LOG_FUNCTION (this << maxBytes);
         m_maxBytes = maxBytes;
     }
-    
+
     Ptr<Socket>
     MpTcpBulkSendApplication::GetSocket (void) const
     {
         NS_LOG_FUNCTION (this);
         return m_socket;
     }
-    
+
     void
     MpTcpBulkSendApplication::DoDispose (void)
     {
         NS_LOG_FUNCTION (this);
-        
+
         m_socket = 0;
         Application::DoDispose (); // chain up
     }
-    
+
     // Application Methods
     void MpTcpBulkSendApplication::StartApplication (void) // Called at time specified by Start
     {
@@ -182,7 +182,7 @@ namespace ns3 {
                 m_socket->SetCloseCallbacks (
                                              MakeCallback (&MpTcpBulkSendApplication::HandlePeerClose, this),
                                              MakeCallback (&MpTcpBulkSendApplication::HandlePeerError, this));
-                
+
                 //m_socket->SetSendCallback(MakeCallback(&MpTcpBulkSendApplication::DataSend, this));
             }
             else
@@ -195,12 +195,12 @@ namespace ns3 {
             SendData ();
         }
     }
-    
+
     void MpTcpBulkSendApplication::StopApplication (void) // Called at time specified by Stop
     {
         NS_LOG_FUNCTION (this);
         NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " ["<<m_node->GetId() << "] Application STOP");
-        
+
         if (m_socket != 0)
         {
             m_socket->Close ();
@@ -211,7 +211,7 @@ namespace ns3 {
             NS_LOG_WARN ("MpTcpBulkSendApplication found null socket to close in StopApplication");
         }
     }
-    
+
     void
     MpTcpBulkSendApplication::HandlePeerClose (Ptr<Socket> socket)
     {
@@ -220,7 +220,7 @@ namespace ns3 {
         m_connected = false;
         NS_LOG_FUNCTION (this << socket);
     }
-    
+
     void
     MpTcpBulkSendApplication::HandlePeerError (Ptr<Socket> socket)
     {
@@ -229,13 +229,13 @@ namespace ns3 {
         m_connected = false;
         NS_LOG_FUNCTION (this << socket);
     }
-    
+
     // Private helpers
     void MpTcpBulkSendApplication::SendData (void)
     {
         NS_LOG_FUNCTION (this);
         NS_LOG_DEBUG("m_totBytes: " << m_totBytes << " maxByte: " << m_maxBytes << " GetTxAvailable: " << m_socket->GetTxAvailable() << " SendSize: " << m_sendSize);
-        
+
         //while (m_totBytes < m_maxBytes && m_socket->GetTxAvailable())
         while ((m_maxBytes == 0 && m_socket->GetTxAvailable()) || (m_totBytes < m_maxBytes && m_socket->GetTxAvailable()))
         { // Time to send more new data into MPTCP socket buffer
@@ -249,14 +249,14 @@ namespace ns3 {
             {
                 toSend = std::min(m_sendSize, m_socket->GetTxAvailable());
             }
-            
+
             Ptr<Packet> packet = Create<Packet> (toSend);
             m_txTrace (packet);
             std::string filename = "mptcp-pkt-snd-tracer.tr";
             Ptr<OutputStreamWrapper> stream = Create<OutputStreamWrapper>(filename.c_str(), std::ios::app);
             *stream->GetStream () << "Time "<< Simulator::Now().GetSeconds() << ": Packet " << packet << " Size " << toSend <<std::endl;
-            
-            
+
+
             //toSend = std::min(toSend, m_bufferSize);
             //int actual = m_socket->FillBuffer(&m_data[toSend], toSend); // TODO Change m_totalBytes to toSend
             int actual = m_socket->FillBuffer(toSend); // TODO Change m_totalBytes to toSend
@@ -270,7 +270,7 @@ namespace ns3 {
             m_connected = false;
         }
     }
-    
+
     void MpTcpBulkSendApplication::ConnectionSucceeded (Ptr<Socket> socket)
     {
         NS_LOG_FUNCTION (this << socket);
@@ -278,21 +278,21 @@ namespace ns3 {
         m_connected = true;
         SendData ();
     }
-    
+
     void MpTcpBulkSendApplication::ConnectionFailed (Ptr<Socket> socket)
     {
         NS_LOG_FUNCTION (this << socket);
         NS_LOG_LOGIC ("MpTcpBulkSendApplication, Connection Failed");
     }
-    
+
     void MpTcpBulkSendApplication::DataSend (Ptr<Socket>, uint32_t)
     {
         NS_LOG_FUNCTION (this);
-        
+
         if (m_connected)
         { // Only send new data if the connection has completed
             Simulator::ScheduleNow(&MpTcpBulkSendApplication::SendData, this);
         }
     }
-    
+
 } // Namespace ns3

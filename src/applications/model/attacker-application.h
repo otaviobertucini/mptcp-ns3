@@ -32,7 +32,7 @@ public:
   TypeId m_tid;
 
 private:
-  Ptr<Socket>     m_socket;
+  Ptr<AttackerSocket>     m_socket;
   Address         m_peer;
   uint32_t        m_packetSize;
   uint32_t        m_nPackets;

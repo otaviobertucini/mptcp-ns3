@@ -6,6 +6,17 @@ namespace ns3{
 
   NS_OBJECT_ENSURE_REGISTERED (AttackerSocket);
 
+  TypeId
+  AttackerSocket::GetTypeId (void)
+  {
+    static TypeId tid = TypeId ("ns3::AttackerSocket")
+      .SetParent<TcpSocketBase> ()
+      .AddConstructor<AttackerSocket>()
+      .SetGroupName ("Internet")
+      ;
+    return tid;
+  }
+
   AttackerSocket::AttackerSocket(){}
 
   AttackerSocket::~AttackerSocket(){}
@@ -57,16 +68,6 @@ namespace ns3{
   AttackerSocket::ScaleSsThresh (uint8_t scaleFactor)
   {
       // NS_LOG_FUNCTION(this << (int)scaleFactor);
-  }
-
-  TypeId
-  AttackerSocket::GetTypeId (void)
-  {
-    static TypeId tid = TypeId ("ns3::AttackerSocket")
-      .SetParent<TcpSocketBase> ()
-      .SetGroupName ("Internet")
-      ;
-    return tid;
   }
 
 }

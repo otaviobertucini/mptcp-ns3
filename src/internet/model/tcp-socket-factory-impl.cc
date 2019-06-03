@@ -21,12 +21,16 @@
 #include "tcp-l4-protocol.h"
 #include "ns3/socket.h"
 #include "ns3/assert.h"
+#include <iostream>
 
 namespace ns3 {
 
 TcpSocketFactoryImpl::TcpSocketFactoryImpl ()
   : m_tcp (0)
 {
+  std::cout << "------------------------" << std::endl;
+  std::cout << "PASSEI PELO TcpSocketFactoryImpl" << std::endl;
+  std::cout << "------------------------" << std::endl;
 }
 TcpSocketFactoryImpl::~TcpSocketFactoryImpl ()
 {
@@ -42,10 +46,13 @@ TcpSocketFactoryImpl::SetTcp (Ptr<TcpL4Protocol> tcp)
 Ptr<Socket>
 TcpSocketFactoryImpl::CreateSocket (void)
 {
+  std::cout << "------------------------" << std::endl;
+  std::cout << "PASSEI PELO TcpSocketFactoryImpl return" << std::endl;
+  std::cout << "------------------------" << std::endl;
   return m_tcp->CreateSocket ();
 }
 
-void 
+void
 TcpSocketFactoryImpl::DoDispose (void)
 {
   m_tcp = 0;

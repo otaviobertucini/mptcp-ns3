@@ -6,6 +6,17 @@ namespace ns3{
 
     NS_OBJECT_ENSURE_REGISTERED (Attacker);
 
+      TypeId
+      Attacker::GetTypeId (void)
+      {
+        static TypeId tid = TypeId ("ns3::Attacker")
+          .SetParent<Application> ()
+          .AddConstructor<Attacker>()
+          .SetGroupName ("Application")
+          ;
+        return tid;
+      }
+
     Attacker::Attacker ()
       : m_socket (0),
         m_peer (),
@@ -42,10 +53,11 @@ namespace ns3{
       m_socket = DynamicCast<AttackerSocket>(Socket::CreateSocket(GetNode(),
                   TcpSocketFactory::GetTypeId()));
 
-      // m_socket = AttackerSocket::CreateSocket(GetNode(),
-      //             TcpSocketFactory::GetTypeId());
-      // m_socket.SendP();
+      // cout << "SOCKET: " << m_socket->GetTypeId() << endl;
+      // cout << "SOCKET: " << m_socket << endl;
+
       // m_socket->Bind ();
+
       // if(m_socket->Connect (m_peer) == -1){}
       //SendPacket ();
     }
@@ -89,16 +101,6 @@ namespace ns3{
           Time tNext (Seconds (m_packetSize * 8 / static_cast<double> (m_dataRate.GetBitRate ())));
           m_sendEvent = Simulator::Schedule (tNext, &Attacker::SendPacket, this);
         }
-    }
-
-    TypeId
-    Attacker::GetTypeId (void)
-    {
-      static TypeId tid = TypeId ("ns3::Attacker")
-        .SetParent<Application> ()
-        .SetGroupName ("Application")
-        ;
-      return tid;
     }
 
 }
