@@ -70,4 +70,46 @@ namespace ns3{
       // NS_LOG_FUNCTION(this << (int)scaleFactor);
   }
 
+  void
+    AttackerSocket::SetSndBufSize(uint32_t size)
+    {
+        //m_txBuffer.SetMaxBufferSize(size);
+        //sendingBuffer = new DataBuffer(size);
+        //sendingBuffer.SetBufferSize(size);
+    }
+    uint32_t
+    AttackerSocket::GetSndBufSize(void) const
+    {
+        //return m_txBuffer.MaxBufferSize();
+        return 0;
+    }
+    void
+    AttackerSocket::SetRcvBufSize(uint32_t size)
+    {
+        //m_rxBuffer.SetMaxBufferSize(size);
+        //recvingBuffer = new DataBuffer(size);
+        // Size of recving buffer does not allocate any memory instantly but allows node to store to this bound.
+        //recvingBuffer.SetBufferSize(size);//50000000
+        //NS_LOG_UNCOND("++++++++++++++++("<< size << ")");
+    }
+    uint32_t
+    AttackerSocket::GetRcvBufSize(void) const
+    {
+        //return m_rxBuffer.MaxBufferSize();
+        return 0;
+    }
+
+    void
+    AttackerSocket::SetSegSize(uint32_t size)
+    {
+        // segmentSize = size;
+        // NS_ABORT_MSG_UNLESS(m_state == CLOSED, "Cannot change segment size dynamically.");
+    }
+
+    uint32_t
+    AttackerSocket::GetSegSize(void) const
+    {
+        //return segmentSize;
+    }
+
 }

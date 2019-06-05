@@ -50,8 +50,14 @@ namespace ns3{
     {
       m_running = true;
       m_packetsSent = 0;
-      m_socket = DynamicCast<AttackerSocket>(Socket::CreateSocket(GetNode(),
-                  TcpSocketFactory::GetTypeId()));
+      // m_socket = DynamicCast<AttackerSocket>(Socket::CreateSocket(GetNode(),
+      //             TcpSocketFactory::GetTypeId()));
+
+      Ptr<Socket> aux = Socket::CreateSocket (GetNode (), TcpSocketFactory::GetTypeId());
+      std::cout << "TYPE BEFORE DYNAMIC my: " << aux << std::endl;
+
+      m_socket = DynamicCast<AttackerSocket>(aux);
+      std::cout << "TYPE AFTER DYNAMIC: " << m_socket << std::endl;
 
       // cout << "SOCKET: " << m_socket->GetTypeId() << endl;
       // cout << "SOCKET: " << m_socket << endl;

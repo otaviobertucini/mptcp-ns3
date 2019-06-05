@@ -2,7 +2,7 @@
 #define ATTACKER_H
 
 #include "ns3/attacker-socket.h"
-#include "ns3/attacker-socket-factory.h"
+// #include "ns3/attacker-socket-factory.h"
 #include "ns3/data-rate.h"
 #include "ns3/packet.h"
 #include "ns3/application.h"
@@ -28,8 +28,6 @@ public:
   void SendPacket (void);
 
   static TypeId GetTypeId (void);
-
-  TypeId m_tid;
 
 private:
   Ptr<AttackerSocket>     m_socket;
