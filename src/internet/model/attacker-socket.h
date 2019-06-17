@@ -19,6 +19,17 @@ public:
   static TypeId GetTypeId (void);
   void SendP();
 
+  virtual void SetSndBufSize (uint32_t size);
+  virtual uint32_t GetSndBufSize (void) const;
+  virtual void SetRcvBufSize (uint32_t size);
+  virtual uint32_t GetRcvBufSize (void) const;
+  virtual void SetSegSize(uint32_t size);
+  virtual uint32_t GetSegSize(void) const;
+
+protected:
+
+  friend class Tcp;
+
   //Inherit from TcpSocketBase
   virtual void SetInitialSSThresh (uint32_t threshold);
   virtual uint32_t GetInitialSSThresh (void) const;
@@ -27,13 +38,6 @@ public:
   virtual Ptr<TcpSocketBase> Fork(void);
   virtual void DupAck (const TcpHeader& tcpHeader, uint32_t count);
   virtual void ScaleSsThresh (uint8_t scaleFactor);
-
-  virtual void SetSndBufSize (uint32_t size);
-  virtual uint32_t GetSndBufSize (void) const;
-  virtual void SetRcvBufSize (uint32_t size);
-  virtual uint32_t GetRcvBufSize (void) const;
-  virtual void SetSegSize(uint32_t size);
-  virtual uint32_t GetSegSize(void) const;
 
 private:
   uint32_t m_initialCWnd;

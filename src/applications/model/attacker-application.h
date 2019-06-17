@@ -11,6 +11,8 @@ using namespace std;
 
 namespace ns3{
 
+class AttackerSocket;
+
 class Attacker : public Application
 {
 public:
@@ -29,7 +31,6 @@ public:
 
   static TypeId GetTypeId (void);
 
-private:
   Ptr<AttackerSocket>     m_socket;
   Address         m_peer;
   uint32_t        m_packetSize;
@@ -38,6 +39,9 @@ private:
   EventId         m_sendEvent;
   bool            m_running;
   uint32_t        m_packetsSent;
+
+private:
+
 };
 
 }
