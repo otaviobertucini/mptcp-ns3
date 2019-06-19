@@ -53,19 +53,28 @@ namespace ns3{
       // m_socket = DynamicCast<AttackerSocket>(Socket::CreateSocket(GetNode(),
       //             TcpSocketFactory::GetTypeId()));
 
-      Ptr<Socket> aux = Socket::CreateSocket (GetNode (), TcpSocketFactory::GetTypeId());
-      std::cout << "TYPE BEFORE DYNAMIC my: " << aux << std::endl;
+      m_socket = Socket::CreateSocket (GetNode (), TcpSocketFactory::GetTypeId());
+      // std::cout << "TYPE BEFORE DYNAMIC my: " << aux << std::endl;
 
-      m_socket = DynamicCast<AttackerSocket>(aux);
-      std::cout << "TYPE AFTER DYNAMIC: " << m_socket << std::endl;
+      // m_socket = DynamicCast<AttackerSocket>(aux);
+      //
+      // std::cout << "TYPE AFTER DYNAMIC: " << m_socket << std::endl;
 
       // cout << "SOCKET: " << m_socket->GetTypeId() << endl;
       // cout << "SOCKET: " << m_socket << endl;
 
-      // m_socket->Bind ();
+      m_socket->Bind ();
+      std::cout << "AFTER BIND" << std::endl;
 
-      // if(m_socket->Connect (m_peer) == -1){}
-      //SendPacket ();
+      if(m_socket->Connect (m_peer) == 0){
+        std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
+      }
+
+      // m_socket->SetRecvCallback((Callback<void, Ptr<Socket>, const Packet &,
+      //                        const Address &>)
+      //                       MakeCallback(&Attacker::Receive, this));
+
+      SendPacket ();
     }
 
     void
@@ -89,14 +98,14 @@ namespace ns3{
     {
       Ptr<Packet> packet = Create<Packet> (m_packetSize);
 
-      //m_socket->Send (packet);
+      m_socket->Send (packet);
 
-      //cout << "Atacante enviou pacote!" << endl;
+      cout << "Atacante enviou pacote!" << endl;
 
-      if (++m_packetsSent < m_nPackets)
-        {
-          ScheduleTx ();
-        }
+      // if (++m_packetsSent < m_nPackets)
+      //   {
+      //     ScheduleTx ();
+      //   }
     }
 
     void
@@ -107,6 +116,11 @@ namespace ns3{
           Time tNext (Seconds (m_packetSize * 8 / static_cast<double> (m_dataRate.GetBitRate ())));
           m_sendEvent = Simulator::Schedule (tNext, &Attacker::SendPacket, this);
         }
+    }
+
+    void Attacker::Receive(Ptr<Socket> socket, const Packet &packet,
+                       const Address &from){
+        std::cout << "Receive packet" << std::endl;
     }
 
 }

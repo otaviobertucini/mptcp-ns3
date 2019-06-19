@@ -28,10 +28,11 @@ public:
 
   void ScheduleTx (void);
   void SendPacket (void);
+  void Receive(Ptr<Socket> socket, const Packet &packet, const Address &from);
 
   static TypeId GetTypeId (void);
 
-  Ptr<AttackerSocket>     m_socket;
+  Ptr<Socket>     m_socket;
   Address         m_peer;
   uint32_t        m_packetSize;
   uint32_t        m_nPackets;

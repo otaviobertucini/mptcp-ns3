@@ -166,7 +166,7 @@ namespace ns3 {
         if (!m_socket)
         {
             //m_socket = CreateObject<MpTcpSocketBase>(GetNode()); //m_socket = Socket::CreateSocket (GetNode (), m_tid);
-            // std::cout << "M_TID: " << m_tid << std::endl;
+            std::cout << "M_TID: " << m_tid << std::endl;
             // m_socket = DynamicCast<MpTcpSocketBase>(Socket::CreateSocket (GetNode (), m_tid));
             Ptr<Socket> aux = Socket::CreateSocket (GetNode (), m_tid);
             std::cout << "TYPE BEFORE DYNAMIC: " << aux->GetTypeId() << std::endl;

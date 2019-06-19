@@ -47,6 +47,11 @@ NS_LOG_COMPONENT_DEFINE("MyMpTcp");
 int
 main(int argc, char *argv[]){
 
+    bool attackerOn = false;
+    CommandLine cmd;
+    cmd.AddValue("attackerOn", "Attacker is on or off", attackerOn);
+    cmd.Parse(argc, argv);
+
     LogComponentEnable("MpTcpSocketBase", LOG_INFO);
 
     Config::SetDefault("ns3::Ipv4GlobalRouting::FlowEcmpRouting", BooleanValue(true));
@@ -136,40 +141,34 @@ main(int argc, char *argv[]){
     sourceApps.Start(Seconds(0.0));
     sourceApps.Stop(Seconds(2.0));
 
-    // Create attacker node
-    Ptr<Node> attackerNode = CreateObject<Node> ();
-    Names::Add ("attacker", attackerNode);
-    NodeContainer attackerHostContainer = NodeContainer(attackerNode);
-    internet.Install(attackerNode);
+    if(attackerOn){
+        std::cout << "Atacante ligado" << std::endl;
+        // Create attacker node
+        Ptr<Node> attackerNode = CreateObject<Node> ();
+        Names::Add ("attacker", attackerNode);
+        NodeContainer attackerHostContainer = NodeContainer(attackerNode);
+        internet.Install(attackerNode);
 
-    // Ptr<Socket> sock = Socket::CreateSocket(atttackerNode,
-    //   TcpSocketFactory::GetTypeId());
-    // Ptr<AttackerSocket> sock = CreateObject<AttackerSocket>();
-    // Ptr<AttackerSocket> sock = DynamicCast<AttackerSocket>
-    //     (Socket::CreateSocket(attackerNode, TcpSocketFactory::GetTypeId()));
+        // Connect attacker and source
+        //attacker to sender
+        NodeContainer nAtck_src = NodeContainer(attackerNode, sourceNode);
+        PointToPointHelper p2pAttacker;
+        p2pAttacker.SetDeviceAttribute("DataRate", StringValue("100Mbps"));
+        p2pAttacker.SetChannelAttribute("Delay", StringValue("1ms"));
+        NetDeviceContainer linkAtck_src = pointToPoint.Install(nAtck_src);
 
-    //TODO: the m_tcp atribute of the socket is not being created. See whats
-    // going on. Problaby the socket is not being created on the right mode.
+        ipv4.NewNetwork ();
+        ipv4.SetBase("10.2.1.0", "255.255.255.0");
+        Ipv4InterfaceContainer iplinkAtck_src = ipv4.Assign (linkAtck_src);
 
-    // Connect attacker and source
-    //attacker to sender
-    NodeContainer nAtck_src = NodeContainer(attackerNode, sourceNode);
-    PointToPointHelper p2pAttacker;
-    p2pAttacker.SetDeviceAttribute("DataRate", StringValue("100Mbps"));
-    p2pAttacker.SetChannelAttribute("Delay", StringValue("1ms"));
-    NetDeviceContainer linkAtck_src = pointToPoint.Install(nAtck_src);
-
-    ipv4.NewNetwork ();
-    ipv4.SetBase("10.2.1.0", "255.255.255.0");
-    Ipv4InterfaceContainer iplinkAtck_src = ipv4.Assign (linkAtck_src);
-
-    //uint16_t sourcePort = 8080;
-    Ptr<Attacker> attacker = CreateObject<Attacker>();
-    attackerNode->AddApplication(attacker);
-    attacker->Setup (InetSocketAddress(iplinkAtck_src.GetAddress(0),
-                    port), 1040, 1000, DataRate("1Mbps"));
-    attacker->SetStartTime(Seconds(1.5));
-    attacker->SetStopTime(Seconds(3.0));
+        //uint16_t sourcePort = 8080;
+        Ptr<Attacker> attacker = CreateObject<Attacker>();
+        attackerNode->AddApplication(attacker);
+        attacker->Setup (InetSocketAddress(iplinkAtck_src.GetAddress(0),
+                        port), 1040, 1000, DataRate("1Mbps"));
+        attacker->SetStartTime(Seconds(1.5));
+        attacker->SetStopTime(Seconds(3.0));
+    }
 
 	   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
