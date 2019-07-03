@@ -70,9 +70,7 @@ namespace ns3{
         std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
       }
 
-      // m_socket->SetRecvCallback((Callback<void, Ptr<Socket>, const Packet &,
-      //                        const Address &>)
-      //                       MakeCallback(&Attacker::Receive, this));
+      m_socket->SetRecvCallback( MakeCallback(&Attacker::Receive, this) );
 
       SendPacket ();
     }
@@ -98,9 +96,22 @@ namespace ns3{
     {
       Ptr<Packet> packet = Create<Packet> (m_packetSize);
 
-      m_socket->Send (packet);
+      TcpHeader header;
 
+      // header.SetSourcePort(sFlow->sPort);
+      // header.SetDestinationPort(sFlow->dPort);
+      header.SetFlags(TcpHeader::ACK);
+      header.SetSequenceNumber(SequenceNumber32(1));
+      // header.SetAckNumber(SequenceNumber32(sFlow->RxSeqNumber));
+      // header.SetWindowSize(AdvertisedWindowSize());
+      packet->AddHeader(header);
+
+      m_socket->Send (packet);
       cout << "Atacante enviou pacote!" << endl;
+
+      // cout << header.GetSequenceNumber().GetValue() << endl;
+      cout << "uid: " << packet->GetUid() << endl;
+
 
       // if (++m_packetsSent < m_nPackets)
       //   {
@@ -118,9 +129,8 @@ namespace ns3{
         }
     }
 
-    void Attacker::Receive(Ptr<Socket> socket, const Packet &packet,
-                       const Address &from){
-        std::cout << "Receive packet" << std::endl;
+    void Attacker::Receive(Ptr<Socket> socket){
+        std::cout << "packet received" << std::endl;
     }
 
 }

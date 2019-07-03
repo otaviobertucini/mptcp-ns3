@@ -46,7 +46,7 @@ static GlobalValue g_checksumEnabled  = GlobalValue ("ChecksumEnabled",
                                                      BooleanValue (false),
                                                      MakeBooleanChecker ());
 
-TypeId 
+TypeId
 Node::GetTypeId (void)
 {
   static TypeId tid = TypeId ("ns3::Node")
@@ -86,7 +86,7 @@ Node::Node()
 Node::Node(uint32_t sid)
   : m_id (0),
     m_sid (sid)
-{ 
+{
   NS_LOG_FUNCTION (this << sid);
   Construct ();
 }
@@ -126,7 +126,7 @@ Node::AddDevice (Ptr<NetDevice> device)
   device->SetNode (this);
   device->SetIfIndex (index);
   device->SetReceiveCallback (MakeCallback (&Node::NonPromiscReceiveFromDevice, this));
-  Simulator::ScheduleWithContext (GetId (), Seconds (0.0), 
+  Simulator::ScheduleWithContext (GetId (), Seconds (0.0),
                                   &NetDevice::Initialize, device);
   NotifyDeviceAdded (device);
   return index;
@@ -139,25 +139,25 @@ Node::GetDevice (uint32_t index) const
                  " is out of range (only have " << m_devices.size () << " devices).");
   return m_devices[index];
 }
-uint32_t 
+uint32_t
 Node::GetNDevices (void) const
 {
   NS_LOG_FUNCTION (this);
   return m_devices.size ();
 }
 
-uint32_t 
+uint32_t
 Node::AddApplication (Ptr<Application> application)
 {
   NS_LOG_FUNCTION (this << application);
   uint32_t index = m_applications.size ();
   m_applications.push_back (application);
   application->SetNode (this);
-  Simulator::ScheduleWithContext (GetId (), Seconds (0.0), 
+  Simulator::ScheduleWithContext (GetId (), Seconds (0.0),
                                   &Application::Initialize, application);
   return index;
 }
-Ptr<Application> 
+Ptr<Application>
 Node::GetApplication (uint32_t index) const
 {
   NS_LOG_FUNCTION (this << index);
@@ -165,14 +165,14 @@ Node::GetApplication (uint32_t index) const
                  " is out of range (only have " << m_applications.size () << " applications).");
   return m_applications[index];
 }
-uint32_t 
+uint32_t
 Node::GetNApplications (void) const
 {
   NS_LOG_FUNCTION (this);
   return m_applications.size ();
 }
 
-void 
+void
 Node::DoDispose ()
 {
   NS_LOG_FUNCTION (this);
@@ -196,7 +196,7 @@ Node::DoDispose ()
   m_applications.clear ();
   Object::DoDispose ();
 }
-void 
+void
 Node::DoInitialize (void)
 {
   NS_LOG_FUNCTION (this);
@@ -217,7 +217,7 @@ Node::DoInitialize (void)
 }
 
 void
-Node::RegisterProtocolHandler (ProtocolHandler handler, 
+Node::RegisterProtocolHandler (ProtocolHandler handler,
                                uint16_t protocolType,
                                Ptr<NetDevice> device,
                                bool promiscuous)
@@ -294,6 +294,9 @@ bool
 Node::ReceiveFromDevice (Ptr<NetDevice> device, Ptr<const Packet> packet, uint16_t protocol,
                          const Address &from, const Address &to, NetDevice::PacketType packetType, bool promiscuous)
 {
+
+  // std::cout << "Receive from device: " << packet->GetUid() << std::endl;
+
   NS_LOG_FUNCTION (this << device << packet << protocol << &from << &to << packetType << promiscuous);
   NS_ASSERT_MSG (Simulator::GetContext () == GetId (), "Received packet with erroneous context ; " <<
                  "make sure the channels in use are correctly updating events context " <<
@@ -309,7 +312,7 @@ Node::ReceiveFromDevice (Ptr<NetDevice> device, Ptr<const Packet> packet, uint16
       if (i->device == 0 ||
           (i->device != 0 && i->device == device))
         {
-          if (i->protocol == 0 || 
+          if (i->protocol == 0 ||
               i->protocol == protocol)
             {
               if (promiscuous == i->promiscuous)
@@ -322,7 +325,7 @@ Node::ReceiveFromDevice (Ptr<NetDevice> device, Ptr<const Packet> packet, uint16
     }
   return found;
 }
-void 
+void
 Node::RegisterDeviceAdditionListener (DeviceAdditionListener listener)
 {
   NS_LOG_FUNCTION (this << &listener);
@@ -334,7 +337,7 @@ Node::RegisterDeviceAdditionListener (DeviceAdditionListener listener)
       listener (*i);
     }
 }
-void 
+void
 Node::UnregisterDeviceAdditionListener (DeviceAdditionListener listener)
 {
   NS_LOG_FUNCTION (this << &listener);
@@ -348,8 +351,8 @@ Node::UnregisterDeviceAdditionListener (DeviceAdditionListener listener)
          }
     }
 }
- 
-void 
+
+void
 Node::NotifyDeviceAdded (Ptr<NetDevice> device)
 {
   NS_LOG_FUNCTION (this << device);
@@ -357,8 +360,8 @@ Node::NotifyDeviceAdded (Ptr<NetDevice> device)
        i != m_deviceAdditionListeners.end (); i++)
     {
       (*i) (device);
-    }  
+    }
 }
- 
+
 
 } // namespace ns3

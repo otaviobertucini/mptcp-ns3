@@ -274,6 +274,10 @@ namespace ns3
         uint8_t flags = mptcpHeader.GetFlags();
         TcpOptions *opt;
         bool hasSyn = flags & TcpHeader::SYN;
+
+        // cout << "seqr: " << mptcpHeader.GetSequenceNumber().GetValue() << endl;
+        // cout << "uidr: " << pkt->GetUid() << endl;
+
         for (uint32_t j = 0; j < mp_options.size(); j++)
         {
             opt = mp_options[j];
@@ -406,7 +410,7 @@ namespace ns3
             if (tcpflags != TcpHeader::RST)
             { // this must be an invalid flag, send reset
                 NS_LOG_LOGIC ("Illegal flag " << tcpflags << " received. Reset packet is sent."); //
-                NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") Bad FtcpFlag received - SendRST");
+                NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") Bad FtcpFlag received - SendRST 1");
                 cout << Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") {"<< flowId <<"} SendRST(ProcessEstablished)" << endl;
                 SendRST(sFlowIdx);
             }
@@ -533,6 +537,11 @@ namespace ns3
 
         // Extract the flags. PSH and URG are not honoured.
         uint8_t tcpflags = mptcpHeader.GetFlags() & ~(TcpHeader::PSH | TcpHeader::URG);
+        // cout << "ok " << TcpFlagPrinter(tcpflags) << endl;
+        // cout << "seq: " << mptcpHeader.GetSequenceNumber() << endl;
+        // if (tcpflags == (TcpHeader::ACK | TcpHeader::RST)){
+        //   cout << "ack + rst" << endl;
+        // }
 
         // Execute a action based on tcpflags
         if (tcpflags == 0)
@@ -541,6 +550,7 @@ namespace ns3
         }
         else if (tcpflags == TcpHeader::ACK)
         {
+            cout << "ACK." << endl;
             NS_ASSERT(tcpflags != TcpHeader::ACK);
         }
         else if (tcpflags == TcpHeader::SYN)
@@ -617,7 +627,7 @@ namespace ns3
             if (tcpflags != TcpHeader::RST)
             { // When (1) rx of FIN+ACK; (2) rx of FIN; (3) rx of bad flags
                 NS_LOG_LOGIC ("Illegal flag " << std::hex << static_cast<uint32_t> (tcpflags) << std::dec << " received. Reset packet is sent."); //
-                NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") Bad FtcpFlag received - SendRST");
+                NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") Bad FtcpFlag received - SendRST 2");
                 cout << Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") {"<< flowId <<"} SendRST(ProcessSynSent)" << endl;
                 SendRST(sFlowIdx);
             }
@@ -682,7 +692,7 @@ namespace ns3
                 //              m_endPoint->SetPeer(InetSocketAddress::ConvertFrom(fromAddress).GetIpv4(),
                 //                  InetSocketAddress::ConvertFrom(fromAddress).GetPort());
                 //            }
-                NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") Bad FtcpFlag received - SendRST");
+                NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") Bad FtcpFlag received - SendRST 3");
                 cout << Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") {"<< flowId <<"} SendRST(ProcessSynRcvd)" << endl;
                 SendRST(sFlowIdx); // Send RST if receive unexpected flag
             }
@@ -848,6 +858,10 @@ namespace ns3
         vector<TcpOptions*> options = mptcpHeader.GetOptions();
         TcpOptions* opt;
         bool stored = true;
+
+        // cout << "RECEIVED DATA" << endl;
+        // cout << "RD: " << p->GetUid() << endl;
+
         for (uint32_t i = 0; i < options.size(); i++)
         {
             opt = options[i];
@@ -2275,6 +2289,9 @@ namespace ns3
         TcpHeader mptcpHeader;
         p->RemoveHeader(mptcpHeader);
 
+        // cout << mptcpHeader.GetSequenceNumber() << endl;
+        // cout << "uiddoforward: " << p->GetUid() << endl;
+
         m_remotePort = port;
         m_localPort = mptcpHeader.GetDestinationPort();
 
@@ -3113,6 +3130,7 @@ namespace ns3
     void
     MpTcpSocketBase::PeerClose(uint8_t sFlowIdx, Ptr<Packet> p, const TcpHeader& mptcpHeader)
     {
+
         NS_LOG_FUNCTION (this << mptcpHeader);
         Ptr<MpTcpSubFlow> sFlow = subflows[sFlowIdx];
 

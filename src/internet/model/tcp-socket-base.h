@@ -26,6 +26,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <iostream>
 
 #include "ns3/callback.h"
 #include "ns3/traced-value.h"
@@ -229,13 +230,13 @@ protected:
   virtual uint32_t GetRcvBufSize (void) const;
   virtual void     SetSegSize (uint32_t size);
   virtual uint32_t GetSegSize (void) const;
-  
+
   //virtual void     SetSSThresh(uint32_t threshold) = 0;//MPTCP
   //virtual uint32_t GetSSThresh(void) const = 0; //MPTCP
-  
+
   virtual void     SetInitialSSThresh (uint32_t threshold) = 0;
   virtual uint32_t GetInitialSSThresh (void) const = 0;
-  
+
   virtual void     SetInitialCwnd (uint32_t cwnd) = 0;
   virtual uint32_t GetInitialCwnd (void) const = 0;
   virtual void     SetConnTimeout (Time timeout);
@@ -570,10 +571,10 @@ protected:
   virtual uint16_t AdvertisedWindowSize (void);
 
   /**
-   * \brief Update the receiver window (RWND) based on the value of the 
+   * \brief Update the receiver window (RWND) based on the value of the
    * window field in the header.
    *
-   * This method suppresses updates unless one of the following three 
+   * This method suppresses updates unless one of the following three
    * conditions holds:  1) segment contains new data (advancing the right
    * edge of the receive buffer), 2) segment does not contain new data
    * but the segment acks new data (highest sequence number acked advances),
@@ -657,7 +658,7 @@ protected:
 
   /**
    * \brief Read TCP options from incoming packets
-   *  
+   *
    * This method sequentially checks each kind of option, and if it
    * is present in the header, starts its processing.
    *
@@ -792,10 +793,10 @@ protected:
   TracedValue<SequenceNumber32> m_highRxMark;     //!< Highest seqno received
   TracedValue<SequenceNumber32> m_highRxAckMark;  //!< Highest ack received
 // Congestion control
-   TracedValue<uint32_t> m_cWnd;     
-   TracedValue<uint32_t> m_ssThresh; 
-   //uint32_t               m_initialCWnd;      
-   //uint32_t               m_initialSsThresh;  
+   TracedValue<uint32_t> m_cWnd;
+   TracedValue<uint32_t> m_ssThresh;
+   //uint32_t               m_initialCWnd;
+   //uint32_t               m_initialSsThresh;
   // Options
   bool    m_winScalingEnabled;    //!< Window Scale option enabled
   uint8_t m_sndScaleFactor;       //!< Sent Window Scale (i.e., the one of the node)

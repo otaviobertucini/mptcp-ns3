@@ -142,7 +142,7 @@ main(int argc, char *argv[]){
     sourceApps.Stop(Seconds(2.0));
 
     if(attackerOn){
-        std::cout << "Atacante ligado" << std::endl;
+        // std::cout << "Atacante ligado" << std::endl;
         // Create attacker node
         Ptr<Node> attackerNode = CreateObject<Node> ();
         Names::Add ("attacker", attackerNode);
@@ -164,13 +164,13 @@ main(int argc, char *argv[]){
         //uint16_t sourcePort = 8080;
         Ptr<Attacker> attacker = CreateObject<Attacker>();
         attackerNode->AddApplication(attacker);
-        attacker->Setup (InetSocketAddress(iplinkAtck_src.GetAddress(0),
+        attacker->Setup (InetSocketAddress(iplinkAtck_src.GetAddress(1),
                         port), 1040, 1000, DataRate("1Mbps"));
-        attacker->SetStartTime(Seconds(1.5));
+        attacker->SetStartTime(Seconds(0.0));
         attacker->SetStopTime(Seconds(3.0));
     }
 
-	   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
+    Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
 	   //AnimationInterface anim("my_mptcp.xml");
 

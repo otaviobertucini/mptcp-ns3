@@ -46,9 +46,6 @@ TcpSocketFactoryImpl::SetTcp (Ptr<TcpL4Protocol> tcp)
 Ptr<Socket>
 TcpSocketFactoryImpl::CreateSocket (void)
 {
-  std::cout << "------------------------" << std::endl;
-  std::cout << "PASSEI PELO TcpSocketFactoryImpl return" << std::endl;
-  std::cout << "------------------------" << std::endl;
   return m_tcp->CreateSocket ();
 }
 

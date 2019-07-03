@@ -6,6 +6,7 @@
 #include "ns3/data-rate.h"
 #include "ns3/packet.h"
 #include "ns3/application.h"
+#include "ns3/tcp-header.h"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ public:
 
   void ScheduleTx (void);
   void SendPacket (void);
-  void Receive(Ptr<Socket> socket, const Packet &packet, const Address &from);
+  void Receive(Ptr<Socket> socket);
 
   static TypeId GetTypeId (void);
 

@@ -628,6 +628,9 @@ TcpSocketBase::ShutdownRecv (void)
 int
 TcpSocketBase::Send (Ptr<Packet> p, uint32_t flags)
 {
+
+  // std::cout << "ENTREI SEND TCPSOCKETBASE" << std::endl;
+
   NS_LOG_FUNCTION (this << p);
   NS_ABORT_MSG_IF (flags, "use of flags is not supported in TcpSocketBase::Send()");
   if (m_state == ESTABLISHED || m_state == SYN_SENT || m_state == CLOSE_WAIT)
