@@ -167,7 +167,9 @@ main(int argc, char *argv[]){
         // std::cout << "IP ADDRESS: " << iplinkAtck_src.GetAddress(1) << std::endl;
         attacker->Setup (InetSocketAddress(iplinkAtck_src.GetAddress(1),
                         port), 1040, 1000, DataRate("1Mbps"),
-                        InetSocketAddress(iplinkAtck_src.GetAddress(0)));
+                        InetSocketAddress(iplinkAtck_src.GetAddress(0)),
+                        iplinkAtck_src.GetAddress(1),
+                        iplinkAtck_src.GetAddress(0));
         attacker->SetStartTime(Seconds(0.0));
         attacker->SetStopTime(Seconds(3.0));
     }

@@ -3305,15 +3305,15 @@ TcpSocketBase::GetRxBuffer (void) const
 }
 
 void
-TcpSocketBase::SendPacket (TcpHeader header, Address saddr,
-                      Address daddr){
+TcpSocketBase::SendPacket (TcpHeader header,  Ipv4Address saddr,
+                      Ipv4Address daddr){
 
   Ptr<Packet> p = Create<Packet>();
   p->AddHeader(header);
 
-  m_tcp->SendPacket(p, header, Ipv4Address::ConvertFrom(saddr),
-                    Ipv4Address::ConvertFrom(daddr));
-  // m_tcp->SendPacket(p, header, saddr, daddr);
+  // m_tcp->SendPacket(p, header, Ipv4Address::ConvertFrom(saddr),
+  //                   Ipv4Address::ConvertFrom(daddr));
+  m_tcp->SendPacket(p, header, saddr, daddr);
 
   return;
 }

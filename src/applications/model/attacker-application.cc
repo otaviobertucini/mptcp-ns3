@@ -36,14 +36,18 @@ namespace ns3{
 
     void
     Attacker::Setup (Address address, uint32_t packetSize, uint32_t nPackets,
-                      DataRate dataRate, Address my_address)
+                     DataRate dataRate, Address my_address,
+                     Ipv4Address address4, Ipv4Address my_address4)
     {
+
       // m_socket = socket;
       m_peer = address;
       m_packetSize = packetSize;
       m_nPackets = nPackets;
       m_dataRate = dataRate;
       m_myAddress = my_address;
+      m_peer4 = address4;
+      m_myAddress4 = my_address4;
 
       // cout << "ADDRESS IS: " << address << endl;
     }
@@ -110,7 +114,7 @@ namespace ns3{
       packet->AddHeader(header);
 
       // m_socket->Send (packet);
-      m_socket->SendPacket(header, m_peer, m_myAddress);
+      m_socket->SendPacket(header, m_peer4, m_myAddress4);
       cout << "Atacante enviou pacote!" << endl;
       cout << "uid: " << packet->GetUid() << endl;
 

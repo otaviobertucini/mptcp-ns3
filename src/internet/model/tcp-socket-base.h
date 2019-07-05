@@ -156,8 +156,8 @@ public:
    */
   Ptr<TcpRxBuffer> GetRxBuffer (void) const;
 
-  void SendPacket (TcpHeader header, Address saddr,
-                        Address daddr);
+  void SendPacket (TcpHeader header, Ipv4Address saddr,
+                        Ipv4Address daddr);
 
 
   // Necessary implementations of null functions from ns3::Socket
