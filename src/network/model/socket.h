@@ -912,6 +912,9 @@ protected:
    */
   bool IsManualIpv6HopLimit (void) const;
 
+  // void SendEmptyPacket (Ptr<Packet> p, TcpHeader header, Address saddr,
+  //                       Adress daddr);
+
   Ptr<NetDevice> m_boundnetdevice; //!< the device this socket is bound to (might be null).
   bool m_recvPktInfo; //!< if the socket should add packet info tags to the packet forwarded to L4.
 

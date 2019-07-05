@@ -531,7 +531,7 @@ SocketAddressTag::GetAddress (void) const
 {
   NS_LOG_FUNCTION (this);
   return m_address;
-}
+}void SendEmptyPacket (uint8_t flags);
 
 NS_OBJECT_ENSURE_REGISTERED (SocketAddressTag);
 

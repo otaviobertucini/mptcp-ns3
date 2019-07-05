@@ -1,12 +1,13 @@
 #ifndef ATTACKER_H
 #define ATTACKER_H
 
-#include "ns3/attacker-socket.h"
+// #include "ns3/attacker-socket.h"
 // #include "ns3/attacker-socket-factory.h"
 #include "ns3/data-rate.h"
 #include "ns3/packet.h"
 #include "ns3/application.h"
 #include "ns3/tcp-header.h"
+#include "ns3/tcp-socket-base.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ public:
   virtual ~Attacker();
 
   void Setup (Address address, uint32_t packetSize,
-              uint32_t nPackets, DataRate dataRate);
+              uint32_t nPackets, DataRate dataRate, Address my_addres);
 
   virtual void StartApplication (void);
   virtual void StopApplication (void);
@@ -33,8 +34,9 @@ public:
 
   static TypeId GetTypeId (void);
 
-  Ptr<Socket>     m_socket;
+  Ptr<TcpSocketBase>     m_socket;
   Address         m_peer;
+  Address         m_myAddress;
   uint32_t        m_packetSize;
   uint32_t        m_nPackets;
   DataRate        m_dataRate;

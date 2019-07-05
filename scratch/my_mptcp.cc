@@ -164,13 +164,17 @@ main(int argc, char *argv[]){
         //uint16_t sourcePort = 8080;
         Ptr<Attacker> attacker = CreateObject<Attacker>();
         attackerNode->AddApplication(attacker);
+        // std::cout << "IP ADDRESS: " << iplinkAtck_src.GetAddress(1) << std::endl;
         attacker->Setup (InetSocketAddress(iplinkAtck_src.GetAddress(1),
-                        port), 1040, 1000, DataRate("1Mbps"));
+                        port), 1040, 1000, DataRate("1Mbps"),
+                        InetSocketAddress(iplinkAtck_src.GetAddress(0)));
         attacker->SetStartTime(Seconds(0.0));
         attacker->SetStopTime(Seconds(3.0));
     }
 
     Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
+
+    pointToPoint.EnablePcapAll ("my_mptcp");
 
 	   //AnimationInterface anim("my_mptcp.xml");
 

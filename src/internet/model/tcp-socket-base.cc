@@ -3304,6 +3304,20 @@ TcpSocketBase::GetRxBuffer (void) const
   return m_rxBuffer;
 }
 
+void
+TcpSocketBase::SendPacket (TcpHeader header, Address saddr,
+                      Address daddr){
+
+  Ptr<Packet> p = Create<Packet>();
+  p->AddHeader(header);
+
+  m_tcp->SendPacket(p, header, Ipv4Address::ConvertFrom(saddr),
+                    Ipv4Address::ConvertFrom(daddr));
+  // m_tcp->SendPacket(p, header, saddr, daddr);
+
+  return;
+}
+
 
 //RttHistory methods
 //RttHistory::RttHistory (SequenceNumber32 s, uint32_t c, Time t)

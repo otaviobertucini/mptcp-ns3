@@ -36,13 +36,16 @@ namespace ns3{
 
     void
     Attacker::Setup (Address address, uint32_t packetSize, uint32_t nPackets,
-                      DataRate dataRate)
+                      DataRate dataRate, Address my_address)
     {
       // m_socket = socket;
       m_peer = address;
       m_packetSize = packetSize;
       m_nPackets = nPackets;
       m_dataRate = dataRate;
+      m_myAddress = my_address;
+
+      // cout << "ADDRESS IS: " << address << endl;
     }
 
     void
@@ -53,10 +56,10 @@ namespace ns3{
       // m_socket = DynamicCast<AttackerSocket>(Socket::CreateSocket(GetNode(),
       //             TcpSocketFactory::GetTypeId()));
 
-      m_socket = Socket::CreateSocket (GetNode (), TcpSocketFactory::GetTypeId());
+      Ptr<Socket> aux = Socket::CreateSocket (GetNode (), TcpSocketFactory::GetTypeId());
       // std::cout << "TYPE BEFORE DYNAMIC my: " << aux << std::endl;
 
-      // m_socket = DynamicCast<AttackerSocket>(aux);
+      m_socket = DynamicCast<TcpSocketBase>(aux);
       //
       // std::cout << "TYPE AFTER DYNAMIC: " << m_socket << std::endl;
 
@@ -66,9 +69,9 @@ namespace ns3{
       m_socket->Bind ();
       std::cout << "AFTER BIND" << std::endl;
 
-      if(m_socket->Connect (m_peer) == 0){
-        std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
-      }
+      // if(m_socket->Connect (m_peer) == 0){
+      //   std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
+      // }
 
       m_socket->SetRecvCallback( MakeCallback(&Attacker::Receive, this) );
 
@@ -106,12 +109,10 @@ namespace ns3{
       // header.SetWindowSize(AdvertisedWindowSize());
       packet->AddHeader(header);
 
-      m_socket->Send (packet);
+      // m_socket->Send (packet);
+      m_socket->SendPacket(header, m_peer, m_myAddress);
       cout << "Atacante enviou pacote!" << endl;
-
-      // cout << header.GetSequenceNumber().GetValue() << endl;
       cout << "uid: " << packet->GetUid() << endl;
-
 
       // if (++m_packetsSent < m_nPackets)
       //   {
