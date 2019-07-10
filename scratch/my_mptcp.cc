@@ -157,7 +157,7 @@ main(int argc, char *argv[]){
         p2pAttacker.SetChannelAttribute("Delay", StringValue("1ms"));
         NetDeviceContainer linkAtck_src = pointToPoint.Install(nAtck_src);
 
-        ipv4.NewNetwork ();
+        // ipv4.NewNetwork ();
         ipv4.SetBase("10.2.1.0", "255.255.255.0");
         Ipv4InterfaceContainer iplinkAtck_src = ipv4.Assign (linkAtck_src);
 
@@ -169,7 +169,8 @@ main(int argc, char *argv[]){
                         port), 1040, 1000, DataRate("1Mbps"),
                         InetSocketAddress(iplinkAtck_src.GetAddress(0)),
                         iplinkAtck_src.GetAddress(1),
-                        iplinkAtck_src.GetAddress(0));
+                        iplinkAtck_src.GetAddress(0),
+                        port);
         attacker->SetStartTime(Seconds(0.0));
         attacker->SetStopTime(Seconds(3.0));
     }

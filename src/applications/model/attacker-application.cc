@@ -37,7 +37,8 @@ namespace ns3{
     void
     Attacker::Setup (Address address, uint32_t packetSize, uint32_t nPackets,
                      DataRate dataRate, Address my_address,
-                     Ipv4Address address4, Ipv4Address my_address4)
+                     Ipv4Address address4, Ipv4Address my_address4,
+                     uint32_t port)
     {
 
       // m_socket = socket;
@@ -48,6 +49,7 @@ namespace ns3{
       m_myAddress = my_address;
       m_peer4 = address4;
       m_myAddress4 = my_address4;
+      peer_port = port;
 
       // cout << "ADDRESS IS: " << address << endl;
     }
@@ -73,9 +75,9 @@ namespace ns3{
       m_socket->Bind ();
       std::cout << "AFTER BIND" << std::endl;
 
-      // if(m_socket->Connect (m_peer) == 0){
-      //   std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
-      // }
+      if(m_socket->Connect (m_peer) == 0){
+        std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
+      }
 
       m_socket->SetRecvCallback( MakeCallback(&Attacker::Receive, this) );
 
@@ -109,14 +111,15 @@ namespace ns3{
       // header.SetDestinationPort(sFlow->dPort);
       header.SetFlags(TcpHeader::ACK);
       header.SetSequenceNumber(SequenceNumber32(1));
+      // header.SetSourcePort(peer_port);
       // header.SetAckNumber(SequenceNumber32(sFlow->RxSeqNumber));
       // header.SetWindowSize(AdvertisedWindowSize());
       packet->AddHeader(header);
 
       // m_socket->Send (packet);
-      m_socket->SendPacket(header, m_peer4, m_myAddress4);
+      // m_socket->SendPacket(header, m_peer4, m_myAddress4);
       cout << "Atacante enviou pacote!" << endl;
-      cout << "uid: " << packet->GetUid() << endl;
+      // cout << "uid: " << packet->GetUid() << endl;
 
       // if (++m_packetsSent < m_nPackets)
       //   {

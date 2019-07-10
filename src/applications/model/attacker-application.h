@@ -24,7 +24,8 @@ public:
 
   void Setup (Address address, uint32_t packetSize,
               uint32_t nPackets, DataRate dataRate, Address my_addres,
-              Ipv4Address address4, Ipv4Address my_address4);
+              Ipv4Address address4, Ipv4Address my_address4,
+              uint32_t port);
 
   virtual void StartApplication (void);
   virtual void StopApplication (void);
@@ -46,6 +47,7 @@ public:
   uint32_t        m_packetsSent;
   Ipv4Address     m_peer4;
   Ipv4Address     m_myAddress4;
+  uint32_t        peer_port;
 
 private:
 
