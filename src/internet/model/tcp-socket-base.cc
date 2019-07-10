@@ -3311,9 +3311,9 @@ TcpSocketBase::SendPacket (TcpHeader header,  Ipv4Address saddr,
   Ptr<Packet> p = Create<Packet>();
   p->AddHeader(header);
 
-  // m_tcp->SendPacket(p, header, Ipv4Address::ConvertFrom(saddr),
-  //                   Ipv4Address::ConvertFrom(daddr));
   m_tcp->SendPacket(p, header, saddr, daddr);
+  std::cout << "Atacante enviou pacote!" << std::endl;
+  std::cout << "uid: " << p->GetUid() << std::endl;
 
   return;
 }

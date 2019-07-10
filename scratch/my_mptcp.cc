@@ -47,7 +47,7 @@ NS_LOG_COMPONENT_DEFINE("MyMpTcp");
 int
 main(int argc, char *argv[]){
 
-    bool attackerOn = false;
+    bool attackerOn = true;
     CommandLine cmd;
     cmd.AddValue("attackerOn", "Attacker is on or off", attackerOn);
     cmd.Parse(argc, argv);

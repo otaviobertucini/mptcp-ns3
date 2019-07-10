@@ -103,22 +103,23 @@ namespace ns3{
     void
     Attacker::SendPacket (void)
     {
-      Ptr<Packet> packet = Create<Packet> (m_packetSize);
+      // Ptr<Packet> packet = Create<Packet> (m_packetSize);
 
       TcpHeader header;
 
       // header.SetSourcePort(sFlow->sPort);
       // header.SetDestinationPort(sFlow->dPort);
       header.SetFlags(TcpHeader::ACK);
-      header.SetSequenceNumber(SequenceNumber32(1));
-      // header.SetSourcePort(peer_port);
+      header.SetSequenceNumber(SequenceNumber32(111));
+      header.SetSourcePort(peer_port);
+      header.SetDestinationPort(49153);
       // header.SetAckNumber(SequenceNumber32(sFlow->RxSeqNumber));
       // header.SetWindowSize(AdvertisedWindowSize());
-      packet->AddHeader(header);
+      // packet->AddHeader(header);
 
       // m_socket->Send (packet);
-      // m_socket->SendPacket(header, m_peer4, m_myAddress4);
-      cout << "Atacante enviou pacote!" << endl;
+      m_socket->SendPacket(header, m_peer4, m_myAddress4);
+      // cout << "Atacante enviou pacote!" << endl;
       // cout << "uid: " << packet->GetUid() << endl;
 
       // if (++m_packetsSent < m_nPackets)
