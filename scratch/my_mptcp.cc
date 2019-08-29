@@ -131,7 +131,7 @@ main(int argc, char *argv[]){
     MpTcpPacketSinkHelper sink("ns3::TcpSocketFactory", InetSocketAddress(Ipv4Address::GetAny(), port));
     ApplicationContainer sinkApps = sink.Install(receiverHost);
     sinkApps.Start(Seconds(0.0));
-    sinkApps.Stop(Seconds(2.0));
+    sinkApps.Stop(Seconds(10.0));
 
     //Ipv4Address dstaddr ("10.20.1.2");
 
@@ -139,7 +139,7 @@ main(int argc, char *argv[]){
     source.SetAttribute("MaxBytes", UintegerValue(4194304));
     ApplicationContainer sourceApps = source.Install(sourceNode);
     sourceApps.Start(Seconds(0.0));
-    sourceApps.Stop(Seconds(2.0));
+    sourceApps.Stop(Seconds(10.0));
 
     if(attackerOn){
         // std::cout << "Atacante ligado" << std::endl;
@@ -171,8 +171,8 @@ main(int argc, char *argv[]){
                         iplinkAtck_src.GetAddress(1),
                         iplinkAtck_src.GetAddress(0),
                         port);
-        attacker->SetStartTime(Seconds(0.0));
-        attacker->SetStopTime(Seconds(3.0));
+        attacker->SetStartTime(Seconds(7.5));
+        attacker->SetStopTime(Seconds(10.0));
     }
 
     Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
@@ -181,7 +181,7 @@ main(int argc, char *argv[]){
 
 	   //AnimationInterface anim("my_mptcp.xml");
 
-    Simulator::Stop (Seconds(4.0));
+    Simulator::Stop (Seconds(10.0));
     Simulator::Run();
 
     Simulator::Destroy();

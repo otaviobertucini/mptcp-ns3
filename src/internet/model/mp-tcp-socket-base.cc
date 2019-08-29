@@ -312,6 +312,7 @@ namespace ns3
         for (uint32_t j = 0; j < options.size(); j++)
         {
             opt = options[j];
+            //Receive a packet from other MPTCP
             if ((opt->optName == OPT_MPC) && hasSyn && (mpRecvState == MP_NONE))
             { // SYN+ACK would be send later on by ProcessSynRcvd(...)
                 mpRecvState = MP_MPC;
@@ -421,7 +422,7 @@ namespace ns3
     void
     MpTcpSocketBase::ProcessListen(Ptr<Packet> packet, const TcpHeader& mptcpHeader, const Address& fromAddress, const Address& toAddress)
     {
-        NS_LOG_UNCOND("TESTE");
+        // NS_LOG_UNCOND("TESTE");
         NS_LOG_FUNCTION (this << mptcpHeader);
 
         // Extract the flags. PSH and URG are not honoured.
@@ -537,10 +538,18 @@ namespace ns3
 
         // Extract the flags. PSH and URG are not honoured.
         uint8_t tcpflags = mptcpHeader.GetFlags() & ~(TcpHeader::PSH | TcpHeader::URG);
-        // cout << "ok " << TcpFlagPrinter(tcpflags) << endl;
-        // cout << "seq: " << mptcpHeader.GetSequenceNumber() << endl;
-        // if (tcpflags == (TcpHeader::ACK | TcpHeader::RST)){
-        //   cout << "ack + rst" << endl;
+        // if(packet->GetUid() == 8850){
+        //     cout  << "n vai passar" << endl;
+        //     cout << "Flag: " << TcpFlagPrinter(tcpflags) << endl;
+        //     // packet->Print(std::cout);
+        //     // cout << "Addr: " << mptcpHeader.GetSource() << endl;
+        // }
+
+        // if(packet->GetUid() == 8849){
+        //     cout  << "8849" << endl;
+        //     cout << "Flag: " << TcpFlagPrinter(tcpflags) << endl;
+        //     // packet->Print(std::cout);
+        //     // cout << "Addr: " << mptcpHeader.GetSource() << endl;
         // }
 
         // Execute a action based on tcpflags
@@ -550,8 +559,9 @@ namespace ns3
         }
         else if (tcpflags == TcpHeader::ACK)
         {
-            cout << "ACK." << endl;
-            NS_ASSERT(tcpflags != TcpHeader::ACK);
+            // cout << "ACK." << endl;
+            // cout << "UID: " << packet->GetUid() << endl;
+            // NS_ASSERT(tcpflaSendRST 2gs != TcpHeader::ACK);
         }
         else if (tcpflags == TcpHeader::SYN)
         {
@@ -626,6 +636,8 @@ namespace ns3
         { // Other in-sequence input
             if (tcpflags != TcpHeader::RST)
             { // When (1) rx of FIN+ACK; (2) rx of FIN; (3) rx of bad flags
+                cout << "Uid rst: " << packet->GetUid() << endl;
+                // cout <<
                 NS_LOG_LOGIC ("Illegal flag " << std::hex << static_cast<uint32_t> (tcpflags) << std::dec << " received. Reset packet is sent."); //
                 NS_LOG_UNCOND(Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") Bad FtcpFlag received - SendRST 2");
                 cout << Simulator::Now().GetSeconds() << " [" << m_node->GetId() << "] (" << (int)sFlowIdx << ") {"<< flowId <<"} SendRST(ProcessSynSent)" << endl;
@@ -2284,6 +2296,12 @@ namespace ns3
 
         m_localAddress = header.GetDestination();
         m_remoteAddress = header.GetSource();
+
+        if(p->GetUid() == 8850){
+          cout << "peguei vc primeiro" << endl;
+          // cout << m_remoteAddress << endl;
+          // cout << "ici: " << m_localAddress << endl;
+        }
 
         // Peel off TCP header and do validity checking
         TcpHeader mptcpHeader;

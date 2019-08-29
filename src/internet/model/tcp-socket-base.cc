@@ -3313,7 +3313,7 @@ TcpSocketBase::SendPacket (TcpHeader header,  Ipv4Address saddr,
 
   m_tcp->SendPacket(p, header, saddr, daddr);
   std::cout << "Atacante enviou pacote!" << std::endl;
-  std::cout << "uid: " << p->GetUid() << std::endl;
+  std::cout << "uidaa: " << p->GetUid() << std::endl;
 
   return;
 }

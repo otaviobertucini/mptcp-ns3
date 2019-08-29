@@ -117,7 +117,15 @@ namespace ns3{
       // header.SetWindowSize(AdvertisedWindowSize());
       // packet->AddHeader(header);
 
-      // m_socket->Send (packet);
+      MpTcpAddressInfo* addrInfo = new MpTcpAddressInfo();
+      addrInfo->addrID = 0;
+      addrInfo->ipv4Addr = m_myAddress4;
+      // addrInfo->mask = interfaceAddr.GetMask();
+      header.AddOptADDR(OPT_ADDR, addrInfo->addrID, addrInfo->ipv4Addr);
+      header.SetLength(7);
+      header.SetOptionsLength(2);
+      header.SetPaddingLength(2);
+
       m_socket->SendPacket(header, m_peer4, m_myAddress4);
       // cout << "Atacante enviou pacote!" << endl;
       // cout << "uid: " << packet->GetUid() << endl;
@@ -139,7 +147,7 @@ namespace ns3{
     }
 
     void Attacker::Receive(Ptr<Socket> socket){
-        std::cout << "packet received" << std::endl;
+        std::cout << "PACOTE RECEBIDO PELO ATACANTE" << std::endl;
     }
 
 }

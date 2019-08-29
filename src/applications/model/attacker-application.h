@@ -8,6 +8,7 @@
 #include "ns3/application.h"
 #include "ns3/tcp-header.h"
 #include "ns3/tcp-socket-base.h"
+#include "ns3/mp-tcp-typedefs.h"
 
 using namespace std;
 
