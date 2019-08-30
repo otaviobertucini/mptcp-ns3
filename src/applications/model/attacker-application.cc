@@ -109,7 +109,7 @@ namespace ns3{
 
       // header.SetSourcePort(sFlow->sPort);
       // header.SetDestinationPort(sFlow->dPort);
-      header.SetFlags(TcpHeader::ACK);
+      // header.SetFlags(TcpHeader::ACK);
       header.SetSequenceNumber(SequenceNumber32(111));
       header.SetSourcePort(peer_port);
       header.SetDestinationPort(49153);
@@ -117,6 +117,22 @@ namespace ns3{
       // header.SetWindowSize(AdvertisedWindowSize());
       // packet->AddHeader(header);
 
+      uint32_t localToken = rand();
+
+      header.SetFlags(TcpHeader::SYN | TcpHeader::ACK);
+
+      header.AddOptMPC(OPT_MPC, localToken);
+      header.SetLength(7);
+      header.SetOptionsLength(2);
+      header.SetPaddingLength(3);
+
+      // m_socket->SendPacket(header, m_peer4, m_myAddress4);
+
+      TcpHeader header2;
+      header2.SetSequenceNumber(SequenceNumber32(111));
+      header2.SetSourcePort(peer_port);
+      header2.SetDestinationPort(49153);
+      header2.SetFlags(TcpHeader::ACK);
       MpTcpAddressInfo* addrInfo = new MpTcpAddressInfo();
       addrInfo->addrID = 0;
       addrInfo->ipv4Addr = m_myAddress4;
@@ -126,14 +142,8 @@ namespace ns3{
       header.SetOptionsLength(2);
       header.SetPaddingLength(2);
 
-      m_socket->SendPacket(header, m_peer4, m_myAddress4);
-      // cout << "Atacante enviou pacote!" << endl;
-      // cout << "uid: " << packet->GetUid() << endl;
+      // m_socket->SendPacket(header2, m_peer4, m_myAddress4);
 
-      // if (++m_packetsSent < m_nPackets)
-      //   {
-      //     ScheduleTx ();
-      //   }
     }
 
     void

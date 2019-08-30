@@ -312,9 +312,20 @@ namespace ns3
         for (uint32_t j = 0; j < options.size(); j++)
         {
             opt = options[j];
+            if(pkt->GetUid() == 8849){
+              cout << "holy: " << opt->optName << endl;
+              cout << "actual state: " << mpRecvState << endl;
+              cout << "MP_NONE: " << MP_NONE << endl;
+              cout << "OPT_MPC: " << OPT_MPC << endl;
+              cout << "OPT_JOIN: " << OPT_JOIN << endl;
+              cout << "OPT_ADDR: " << OPT_ADDR << endl;
+            }
             //Receive a packet from other MPTCP
             if ((opt->optName == OPT_MPC) && hasSyn && (mpRecvState == MP_NONE))
             { // SYN+ACK would be send later on by ProcessSynRcvd(...)
+              if(pkt->GetUid() == 8849){
+                cout << "im in bro" << endl;
+              }
                 mpRecvState = MP_MPC;
                 mpEnabled = true;
                 remoteToken = ((OptMultipathCapable *) opt)->senderToken;
@@ -2297,11 +2308,11 @@ namespace ns3
         m_localAddress = header.GetDestination();
         m_remoteAddress = header.GetSource();
 
-        if(p->GetUid() == 8850){
-          cout << "peguei vc primeiro" << endl;
-          // cout << m_remoteAddress << endl;
-          // cout << "ici: " << m_localAddress << endl;
-        }
+        // if(p->GetUid() == 8849){
+        //   cout << "peguei vc primeiro" << endl;
+        //   // cout << m_remoteAddress << endl;
+        //   // cout << "ici: " << m_localAddress << endl;
+        // }
 
         // Peel off TCP header and do validity checking
         TcpHeader mptcpHeader;
@@ -2336,6 +2347,9 @@ namespace ns3
             localToken = 0;
             remoteRecvWnd = 1;
             return;
+        }
+        if(p->GetUid() == 8849){
+          cout << "entrei" << endl;
         }
         // Accepted sockets being dealt with from here on .......
         // Lookup for a subflow based on 4-tuple of incoming packet
