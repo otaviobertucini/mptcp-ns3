@@ -320,6 +320,12 @@ namespace ns3
               cout << "OPT_JOIN: " << OPT_JOIN << endl;
               cout << "OPT_ADDR: " << OPT_ADDR << endl;
             }
+
+
+            if(pkt->GetUid() == 8849){
+              cout << "ENTREI 8849" << endl;
+            }
+
             //Receive a packet from other MPTCP
             if ((opt->optName == OPT_MPC) && hasSyn && (mpRecvState == MP_NONE))
             { // SYN+ACK would be send later on by ProcessSynRcvd(...)
@@ -345,6 +351,7 @@ namespace ns3
             {
                 // Receiver store sender's addresses information and send back its addresses.
                 // If there are several addresses to advertise then multiple OPT_ADDR would be attached to the TCP Options.
+                cout << "ADD_ADDR in: " << pkt->GetUid() << endl;
                 MpTcpAddressInfo * addrInfo = new MpTcpAddressInfo();
                 addrInfo->addrID = ((OptAddAddress *) opt)->addrID;
                 addrInfo->ipv4Addr = ((OptAddAddress *) opt)->addr;
@@ -549,19 +556,6 @@ namespace ns3
 
         // Extract the flags. PSH and URG are not honoured.
         uint8_t tcpflags = mptcpHeader.GetFlags() & ~(TcpHeader::PSH | TcpHeader::URG);
-        // if(packet->GetUid() == 8850){
-        //     cout  << "n vai passar" << endl;
-        //     cout << "Flag: " << TcpFlagPrinter(tcpflags) << endl;
-        //     // packet->Print(std::cout);
-        //     // cout << "Addr: " << mptcpHeader.GetSource() << endl;
-        // }
-
-        // if(packet->GetUid() == 8849){
-        //     cout  << "8849" << endl;
-        //     cout << "Flag: " << TcpFlagPrinter(tcpflags) << endl;
-        //     // packet->Print(std::cout);
-        //     // cout << "Addr: " << mptcpHeader.GetSource() << endl;
-        // }
 
         // Execute a action based on tcpflags
         if (tcpflags == 0)

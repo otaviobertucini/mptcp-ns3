@@ -72,9 +72,9 @@ namespace ns3{
       // cout << "SOCKET: " << m_socket->GetTypeId() << endl;
       // cout << "SOCKET: " << m_socket << endl;
 
-      m_socket->Bind ();
-      std::cout << "AFTER BIND" << std::endl;
-
+      // m_socket->Bind ();
+      // std::cout << "AFTER BIND" << std::endl;
+      //
       if(m_socket->Connect (m_peer) == 0){
         std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
       }
