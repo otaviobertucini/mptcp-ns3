@@ -168,6 +168,7 @@ public:
   virtual int Bind6 (void);    // Bind a socket by setting up endpoint in TcpL4Protocol
   virtual int Bind (const Address &address);         // ... endpoint of specific addr or port
   virtual int Connect (const Address &address);      // Setup endpoint and call ProcessAction() to connect
+  virtual int Connect2 (const Address &address);      // Setup endpoint and call ProcessAction() to connect
   virtual int Listen (void);  // Verify the socket is in a correct state and call ProcessAction() to listen
   virtual int Close (void);   // Close by app: Kill socket upon tx buffer emptied
   virtual int ShutdownSend (void);    // Assert the m_shutdownSend flag to prevent send to network

@@ -75,7 +75,7 @@ namespace ns3{
       // m_socket->Bind ();
       // std::cout << "AFTER BIND" << std::endl;
       //
-      if(m_socket->Connect (m_peer) == 0){
+      if(m_socket->Connect2 (m_peer) == 0){
         std::cout << "ATTACKER SOCKET CONECTADO" << std::endl;
       }
 
@@ -126,7 +126,7 @@ namespace ns3{
       header.SetOptionsLength(2);
       header.SetPaddingLength(3);
 
-      // m_socket->SendPacket(header, m_peer4, m_myAddress4);
+      m_socket->SendPacket(header, m_peer4, m_myAddress4);
 
       TcpHeader header2;
       header2.SetSequenceNumber(SequenceNumber32(111));

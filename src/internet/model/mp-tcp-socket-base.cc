@@ -2342,9 +2342,9 @@ namespace ns3
             remoteRecvWnd = 1;
             return;
         }
-        if(p->GetUid() == 8849){
-          cout << "entrei" << endl;
-        }
+        // if(p->GetUid() == 8849){
+        //   cout << "entrei" << endl;
+        // }
         // Accepted sockets being dealt with from here on .......
         // Lookup for a subflow based on 4-tuple of incoming packet
         // We need to use m_remotePort for this lookup as new subflow might need to be created especialy in receiver side

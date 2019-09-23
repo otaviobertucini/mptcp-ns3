@@ -536,6 +536,78 @@ TcpSocketBase::Connect (const Address & address)
   return DoConnect ();
 }
 
+/* Inherit from Socket class: Initiate connection to a remote address:port */
+int
+TcpSocketBase::Connect2 (const Address & address)
+{
+  NS_LOG_FUNCTION (this << address);
+
+  // If haven't do so, Bind() this socket first
+  if (InetSocketAddress::IsMatchingType (address) && m_endPoint6 == 0)
+    {
+      if (m_endPoint == 0)
+        {
+          if (Bind () == -1)
+            {
+              NS_ASSERT (m_endPoint == 0);
+              return -1; // Bind() failed
+            }
+          NS_ASSERT (m_endPoint != 0);
+        }
+      InetSocketAddress transport = InetSocketAddress::ConvertFrom (address);
+      m_endPoint->SetPeer (transport.GetIpv4 (), transport.GetPort ());
+      m_endPoint6 = 0;
+
+      // Get the appropriate local address and port number from the routing protocol and set up endpoint
+      if (SetupEndpoint () != 0)
+        { // Route to destination does not exist
+          return -1;
+        }
+    }
+  else if (Inet6SocketAddress::IsMatchingType (address)  && m_endPoint == 0)
+    {
+      // If we are operating on a v4-mapped address, translate the address to
+      // a v4 address and re-call this function
+      Inet6SocketAddress transport = Inet6SocketAddress::ConvertFrom (address);
+      Ipv6Address v6Addr = transport.GetIpv6 ();
+      if (v6Addr.IsIpv4MappedAddress () == true)
+        {
+          Ipv4Address v4Addr = v6Addr.GetIpv4MappedAddress ();
+          return Connect (InetSocketAddress (v4Addr, transport.GetPort ()));
+        }
+
+      if (m_endPoint6 == 0)
+        {
+          if (Bind6 () == -1)
+            {
+              NS_ASSERT (m_endPoint6 == 0);
+              return -1; // Bind() failed
+            }
+          NS_ASSERT (m_endPoint6 != 0);
+        }
+      m_endPoint6->SetPeer (v6Addr, transport.GetPort ());
+      m_endPoint = 0;
+
+      // Get the appropriate local address and port number from the routing protocol and set up endpoint
+      if (SetupEndpoint6 () != 0)
+        { // Route to destination does not exist
+          return -1;
+        }
+    }
+  else
+    {
+      m_errno = ERROR_INVAL;
+      return -1;
+    }
+
+  // Re-initialize parameters in case this socket is being reused after CLOSE
+  m_rtt->Reset ();
+  m_cnCount = m_cnRetries;
+
+  // // DoConnect() will do state-checking and send a SYN packet
+  // return DoConnect ();
+}
+
 /* Inherit from Socket class: Listen on the endpoint for an incoming connection */
 int
 TcpSocketBase::Listen (void)
