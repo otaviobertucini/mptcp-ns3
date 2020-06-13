@@ -2,26 +2,21 @@
     The Network Simulator, Versão 3.19
     --------------------------------
 
-Para rodar o código presente neste repositório, basta o usuário executar os seguintes passos em um terminal de comando:
+To run NS-3, just follow these steps:
 
-Clonar o repositório com o comando:
+Clone the repo with:
 git clone git@github.com:otaviobertucini/mptcp-ns3.git
 
-Acessar a pasta do NS-3:
+Enter in the file you just cloned:
 cd mptcp-ns3
 
-Para realizar a construção do NS-3:
+To build NS-3:
 ./waf configure --enable-tests --enable-examples && ./waf build
 
-Acessar a pasta onde estão as simulações:
+To run the simulations:
 cd scratch
+./waf --run "scratch/my_mptcp --attackerOn=true" to run the simulation with the attacker
+./waf --run "scratch/my_mptcp --attackerOn=false" para rodar a simulação without the attacker
 
-Para rodar a simulação:
-./waf --run "scratch/my_mptcp --attackerOn=true" para rodar a simulação com o atacante ativado
-./waf --run "scratch/my_mptcp --attackerOn=false" para rodar a simulação sem o atacante
-
-Todas as bibliotecas e ferramentas adicionais já estão nesse repositório. Para utilizá-lo, basta seguir os procedimentos
-descritos acima. 
-
-Mais informações podem ser encontradas em:
+More info can be found in:
 http://www.nsnam.org
